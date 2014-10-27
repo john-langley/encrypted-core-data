@@ -1395,7 +1395,7 @@ static void dbsqliteRegExp(sqlite3_context *context, int argc, const char **argv
         }
         
         // Stop if we failed
-        *stop = !success;
+//        *stop = !success;
     }];
     
     return success;

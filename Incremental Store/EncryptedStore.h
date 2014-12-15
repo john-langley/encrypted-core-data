@@ -24,7 +24,8 @@ extern NSString * const EncryptedStoreCacheSize;
 
 typedef NS_ENUM(NSInteger, EncryptedStoreError)
 {
-    EncryptedStoreErrorIncorrectPasscode = 6000
+    EncryptedStoreErrorIncorrectPasscode = 6000,
+    EncryptedStoreErrorMigrationFailed
 };
 
 @interface EncryptedStore : NSIncrementalStore
@@ -32,6 +33,11 @@ typedef NS_ENUM(NSInteger, EncryptedStoreError)
 + (NSPersistentStoreCoordinator *)makeStoreWithOptions:(NSDictionary *)options managedObjectModel:(NSManagedObjectModel *)objModel error:(NSError **)error;
 + (NSPersistentStoreCoordinator *)makeStoreWithStructOptions:(EncryptedStoreOptions *) options managedObjectModel:(NSManagedObjectModel *)objModel error:(NSError **)error;
 + (NSPersistentStoreCoordinator *)makeStore:(NSManagedObjectModel *) objModel passcode:(NSString *) passcode error:(NSError **)error;
+
++ (NSPersistentStoreCoordinator *)makeStoreWithOptions:(NSDictionary *)options managedObjectModel:(NSManagedObjectModel *)objModel error:(NSError * __autoreleasing*)error;
++ (NSPersistentStoreCoordinator *)makeStoreWithStructOptions:(EncryptedStoreOptions *) options managedObjectModel:(NSManagedObjectModel *)objModel error:(NSError * __autoreleasing*)error;
++ (NSPersistentStoreCoordinator *)makeStore:(NSManagedObjectModel *) objModel
+                                   passcode:(NSString *) passcode error:(NSError * __autoreleasing*)error;
 
 
 - (NSNumber *)maximumObjectIDInTable:(NSString *)table;

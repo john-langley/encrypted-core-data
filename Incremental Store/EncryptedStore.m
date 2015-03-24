@@ -89,32 +89,17 @@ static NSString * const EncryptedStoreMetadataTableName = @"meta";
 {
     NSPersistentStoreCoordinator * persistentCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:objModel];
     
-    //  NSString* appSupportDir = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    
-    BOOL backup = YES;
     NSURL *databaseURL;
     id dburl = [options objectForKey:EncryptedStoreDatabaseLocation];
     if(dburl != nil) {
         if ([dburl isKindOfClass:[NSString class]]){
             databaseURL = [NSURL URLWithString:[options objectForKey:EncryptedStoreDatabaseLocation]];
-            backup = NO;
         }
         else if ([dburl isKindOfClass:[NSURL class]]){
             databaseURL = dburl;
-            backup = NO;
         }
     }
-    
-    if (backup){
-        NSString *dbNameKey = (__bridge NSString *)kCFBundleNameKey;
-        NSString *dbName = NSBundle.mainBundle.infoDictionary[dbNameKey];
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        NSURL *applicationSupportURL = [[fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-        [fileManager createDirectoryAtURL:applicationSupportURL withIntermediateDirectories:NO attributes:nil error:nil];
-        databaseURL = [applicationSupportURL URLByAppendingPathComponent:[dbName stringByAppendingString:@".sqlite"]];
-
-    }
-    
+        
     NSPersistentStore *store = [persistentCoordinator addPersistentStoreWithType:EncryptedStoreType
                                                                    configuration:nil
                                                                              URL:databaseURL
@@ -659,9 +644,7 @@ static NSString * const EncryptedStoreMetadataTableName = @"meta";
                 NSDictionary *options = [self options];
                 if ([[options objectForKey:NSMigratePersistentStoresAutomaticallyOption] boolValue] &&
                     [[options objectForKey:NSInferMappingModelAutomaticallyOption] boolValue]) {
-                    NSMutableArray *bundles = [NSMutableArray array];
-                    [bundles addObjectsFromArray:[NSBundle allBundles]];
-                    [bundles addObjectsFromArray:[NSBundle allFrameworks]];
+                    NSMutableArray *bundles = [NSArray arrayWithObject:[NSBundle mainBundle]];
                     NSManagedObjectModel *oldModel = [NSManagedObjectModel
                                                       mergedModelFromBundles:bundles
                                                       forStoreMetadata:metadata];

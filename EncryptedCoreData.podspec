@@ -18,11 +18,11 @@ Pod::Spec.new do |s|
     s.requires_arc  = true
 
     s.ios.deployment_target = '6.0'
-    s.osx.deployment_target = '10.9'
+    s.osx.deployment_target = '10.8'
     s.source_files  = 'Incremental Store/**/*.{h,m}'
     s.public_header_files   = 'Incremental Store/EncryptedStore.h'
   
-    s.dependency 'SQLCipher', '~> 3.1.0'
+    s.dependency 'SQLCipher', '~> 3.3.0'
   
     s.xcconfig      = {
         'OTHER_CFLAGS' => '$(inherited) -DSQLITE_HAS_CODEC -DSQLCIPHER_CRYPTO_CC'
